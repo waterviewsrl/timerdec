@@ -10,7 +10,7 @@ class cl():
     def __init__(self):
         pass
 
-    @timerdec()
+    @timerdec(progress=True)
     def f(self):
         a = r(1000, 1000)
         time.sleep(0.2)

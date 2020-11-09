@@ -18,6 +18,7 @@ setuptools.setup(
     url="https://github.com/desmoteo/timerdec",
     packages=setuptools.find_packages(),
     install_requires=[
+        "tqdm",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
