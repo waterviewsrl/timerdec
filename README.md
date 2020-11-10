@@ -62,15 +62,18 @@ res3 =  timerdec_always()(vec.astype)(np.uint8)
 
 ### Execution and Configuration
 
+On execution, statistics are collected and results are printed at the end of execution. Fore each measured methid there will be a line containin wall clock time average and variance, user, system, children user and children system time. 
+
 If no environment variable is set, timerdec will collect information only for the methods decorated with timerdec_always.
 ``` shell
 python3 test.py
 ```
 which outputs:
 ```
-Average time and variance for method ndarray.astype: 0.0005652927502524108 3.3377488523153454e-07. Total numer of reps: 4
-Average time and variance for method ultima: 1.000977518473519 4.530562137669239e-08. Total numer of reps: 4
-Average time and variance for method cl.dummy: 1.48697174154222e-07 2.5282403906653095e-14. Total numer of reps: 1000
+Avg time and std dev (usr, sys, usr_child, sys_child) for method ndarray.astype           : 1.33E-03 4.33E-06 (2.50E-03, 0.00E+00 0.00E+00, 0.00E+00). Reps: 4
+Avg time and std dev (usr, sys, usr_child, sys_child) for method ultima                   : 1.00E+00 2.21E-07 (0.00E+00, 0.00E+00 0.00E+00, 0.00E+00). Reps: 4
+Avg time and std dev (usr, sys, usr_child, sys_child) for method cl.dummy                 : 2.54E-07 3.38E-15 (2.00E-05, 0.00E+00 0.00E+00, 0.00E+00). Reps: 1000
+
 ```
 
 The TIMERDEC_METHODS can be set including a list of semicolon separated method names.
@@ -78,12 +81,13 @@ The TIMERDEC_METHODS can be set including a list of semicolon separated method n
 TIMERDEC_METHODS="cl.f;r"   python3 test.py
 ```
 ```
-100%|██████████████████████████████████████████████████████████████████████████████| 4/4 [00:04<00:00,  1.04s/it]
-Average time and variance for method ndarray.astype: 0.0005652927502524108 3.3377488523153454e-07. Total numer of reps: 4
-Average time and variance for method ultima: 1.000977518473519 4.530562137669239e-08. Total numer of reps: 4
-Average time and variance for method cl.dummy: 1.962226815521717e-07 2.0575390157789076e-12. Total numer of reps: 1000
-Average time and variance for method cl.f: 1.0413964999606833 0.00014622954992246043. Total numer of reps: 4
-Average time and variance for method r: 0.009776858667464694 2.8456450978724894e-05. Total numer of reps: 32
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:04<00:00,  1.04s/it]
+Avg time and std dev (usr, sys, usr_child, sys_child) for method ndarray.astype           : 8.41E-04 4.00E-07 (0.00E+00, 0.00E+00 0.00E+00, 0.00E+00). Reps: 4
+Avg time and std dev (usr, sys, usr_child, sys_child) for method ultima                   : 1.00E+00 8.45E-09 (0.00E+00, 0.00E+00 0.00E+00, 0.00E+00). Reps: 4
+Avg time and std dev (usr, sys, usr_child, sys_child) for method cl.dummy                 : 3.12E-07 4.43E-14 (3.00E-05, 0.00E+00 0.00E+00, 0.00E+00). Reps: 1000
+Avg time and std dev (usr, sys, usr_child, sys_child) for method cl.f                     : 6.21E-01 1.91E-04 (5.97E-01, 2.00E-02 0.00E+00, 0.00E+00). Reps: 4
+Avg time and std dev (usr, sys, usr_child, sys_child) for method r                        : 8.21E-03 2.43E-05 (6.25E-03, 2.50E-03 0.00E+00, 0.00E+00). Reps: 32
+
 
 ```
 
@@ -92,11 +96,12 @@ To avoid benchmarking the same method many times, set the variable TIMERDEC_RERU
 TIMERDEC_METHODS="cl.f;r" TIMERDEC_RERUN=false   python3 test.py
 ```
 ```
-100%|███████████████████████████████████████████████████████████████████████████████| 4/4 [00:04<00:00,  1.02s/it]
-Average time and variance for method ndarray.astype: 0.0005652927502524108 3.3377488523153454e-07. Total numer of reps: 4
-Average time and variance for method ultima: 1.000977518473519 4.530562137669239e-08. Total numer of reps: 4
-Average time and variance for method cl.dummy: 2.154293470084667e-07 1.7538931690329252e-12. Total numer of reps: 1000
-Average time and variance for method cl.f: 1.0227295864897314 0.00067336464983955. Total numer of reps: 4
-Average time and variance for method r: 0.01273957351804711 3.958873168578572e-05. Total numer of reps: 4
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:04<00:00,  1.04s/it]
+Avg time and std dev (usr, sys, usr_child, sys_child) for method ndarray.astype           : 8.41E-04 4.00E-07 (0.00E+00, 0.00E+00 0.00E+00, 0.00E+00). Reps: 4
+Avg time and std dev (usr, sys, usr_child, sys_child) for method ultima                   : 1.00E+00 8.45E-09 (0.00E+00, 0.00E+00 0.00E+00, 0.00E+00). Reps: 4
+Avg time and std dev (usr, sys, usr_child, sys_child) for method cl.dummy                 : 3.12E-07 4.43E-14 (3.00E-05, 0.00E+00 0.00E+00, 0.00E+00). Reps: 1000
+Avg time and std dev (usr, sys, usr_child, sys_child) for method cl.f                     : 6.21E-01 1.91E-04 (5.97E-01, 2.00E-02 0.00E+00, 0.00E+00). Reps: 4
+Avg time and std dev (usr, sys, usr_child, sys_child) for method r                        : 8.21E-03 2.43E-05 (6.25E-03, 2.50E-03 0.00E+00, 0.00E+00). Reps: 32
+
 
 ```
