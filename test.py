@@ -29,3 +29,12 @@ c = cl()
 
 c.f()
 c.dummy(a="dummy data")
+
+def ultima(s):
+    time.sleep(1)
+    return s
+
+#We can also wrap function calls
+res = timerdec_always()(ultima)("Bye!")
+
+print(res)
