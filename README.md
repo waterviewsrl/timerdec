@@ -49,7 +49,7 @@ def ultima(s):
 res1 = timerdec_always()(ultima)("Hello!")
 print(res1)
 
-#Subsequent calls of functions with inline (non decorator) wrapping will no be object of measures
+#Subsequent calls of functions with inline (non decorator) wrapping will not be object of measures
 res2 = ultima('Bye!')
 
 vec = np.zeros((1000,1000))
@@ -68,6 +68,8 @@ python3 test.py
 ```
 which outputs:
 ```
+Average time and variance for method ndarray.astype: 0.0005652927502524108 3.3377488523153454e-07. Total numer of reps: 4
+Average time and variance for method ultima: 1.000977518473519 4.530562137669239e-08. Total numer of reps: 4
 Average time and variance for method cl.dummy: 1.48697174154222e-07 2.5282403906653095e-14. Total numer of reps: 1000
 ```
 
@@ -77,6 +79,8 @@ TIMERDEC_METHODS="cl.f;r"   python3 test.py
 ```
 ```
 100%|██████████████████████████████████████████████████████████████████████████████| 4/4 [00:04<00:00,  1.04s/it]
+Average time and variance for method ndarray.astype: 0.0005652927502524108 3.3377488523153454e-07. Total numer of reps: 4
+Average time and variance for method ultima: 1.000977518473519 4.530562137669239e-08. Total numer of reps: 4
 Average time and variance for method cl.dummy: 1.962226815521717e-07 2.0575390157789076e-12. Total numer of reps: 1000
 Average time and variance for method cl.f: 1.0413964999606833 0.00014622954992246043. Total numer of reps: 4
 Average time and variance for method r: 0.009776858667464694 2.8456450978724894e-05. Total numer of reps: 32
@@ -89,6 +93,8 @@ TIMERDEC_METHODS="cl.f;r" TIMERDEC_RERUN=false   python3 test.py
 ```
 ```
 100%|███████████████████████████████████████████████████████████████████████████████| 4/4 [00:04<00:00,  1.02s/it]
+Average time and variance for method ndarray.astype: 0.0005652927502524108 3.3377488523153454e-07. Total numer of reps: 4
+Average time and variance for method ultima: 1.000977518473519 4.530562137669239e-08. Total numer of reps: 4
 Average time and variance for method cl.dummy: 2.154293470084667e-07 1.7538931690329252e-12. Total numer of reps: 1000
 Average time and variance for method cl.f: 1.0227295864897314 0.00067336464983955. Total numer of reps: 4
 Average time and variance for method r: 0.01273957351804711 3.958873168578572e-05. Total numer of reps: 4
