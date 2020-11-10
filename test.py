@@ -40,6 +40,7 @@ print(res1)
 
 #Subsequent calls of functions with inline (non decorator) wrapping will no be object of measures
 res2 = ultima('Bye!')
+print(res2)
 
 vec = np.zeros((1000,1000))
 
