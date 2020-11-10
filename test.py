@@ -35,6 +35,13 @@ def ultima(s):
     return s
 
 #We can also wrap function calls
-res = timerdec_always()(ultima)("Bye!")
+res1 = timerdec_always()(ultima)("Hello!")
+print(res1)
 
-print(res)
+#Subsequent calls of functions with inline (non decorator) wrapping will no be object of measures
+res2 = ultima('Bye!')
+
+vec = np.zeros((1000,1000))
+
+#It is possible to inline wrap object methods as well
+res3 =  timerdec_always()(vec.astype)(np.uint8)
