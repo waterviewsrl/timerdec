@@ -21,7 +21,7 @@ def r(size1, size2):
 class cl():
     def __init__(self):
         pass
-        
+
     #We can require timing information collection for method f at run time. A progress bar will be printed
     @timerdec(progress=True)
     def f(self):
@@ -40,6 +40,24 @@ c = cl()
 
 c.f()
 c.dummy(a="dummy data")
+
+def ultima(s):
+    time.sleep(1)
+    return s
+
+#We can also wrap function calls
+res1 = timerdec_always()(ultima)("Hello!")
+print(res1)
+
+#Subsequent calls of functions with inline (non decorator) wrapping will no be object of measures
+res2 = ultima('Bye!')
+
+vec = np.zeros((1000,1000))
+
+#It is possible to inline wrap object methods as well
+res3 =  timerdec_always()(vec.astype)(np.uint8)
+
+
 ```
 
 ### Execution and Configuration
