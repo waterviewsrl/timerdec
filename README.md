@@ -49,7 +49,7 @@ def ultima(s):
 res1 = timerdec_always()(ultima)("Hello!")
 print(res1)
 
-#Subsequent calls of functions with inline (non decorator) wrapping will no be object of measures
+#Subsequent calls of functions with inline (non decorator) wrapping will not be object of measures
 res2 = ultima('Bye!')
 
 vec = np.zeros((1000,1000))
