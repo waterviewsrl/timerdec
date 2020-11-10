@@ -15,9 +15,7 @@ class cl():
     @timerdec(progress=True)
     def f(self):
         a = r(1000, 1000)
-        time.sleep(0.2)
         b = r(1000, 1000)
-        time.sleep(0.2)
         c = np.dot(a,b)
 
     #Timing information will always be collected for this method. Method is run 1000 times

@@ -8,7 +8,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setuptools.setup(
     name="timerdec",
-    version="0.0.2",
+    version="0.0.3",
     author="Matteo Ferrabone",
     author_email="matteo.ferrabone@gmail.com",
     license='MIT',
@@ -19,6 +19,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         "tqdm",
+        "psutil",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
