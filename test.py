@@ -14,7 +14,6 @@ class cl():
         
     #We can require timing information collection for method f at run time. A progress bar will be printed
     
-    @nowdec()
     @timerdec(progress=True)
     def f(self):
         a = r(1000, 1000)
@@ -32,7 +31,9 @@ def do():
     c.f()
     c.dummy(a="dummy data")
 
+now('before do')
 do()
+now('after do')
 
 
 def ultima(s):
