@@ -1,4 +1,5 @@
-from timerdec.decorators import timerdec, timerdec_always
+from timerdec.decorators import timerdec, timerdec_always, nowdec
+from timerdec.snapshots import now
 import time
 import numpy as np
 
@@ -12,6 +13,8 @@ class cl():
         pass
         
     #We can require timing information collection for method f at run time. A progress bar will be printed
+    
+    @nowdec()
     @timerdec(progress=True)
     def f(self):
         a = r(1000, 1000)
@@ -25,12 +28,18 @@ class cl():
 
 c = cl()
 
-c.f()
-c.dummy(a="dummy data")
+def do():
+    c.f()
+    c.dummy(a="dummy data")
+
+do()
+
 
 def ultima(s):
     time.sleep(1)
     return s
+
+
 
 #We can also wrap function calls
 res1 = timerdec_always()(ultima)("Hello!")
@@ -42,5 +51,9 @@ print(res2)
 
 vec = np.zeros((1000,1000))
 
+now()
+
 #It is possible to inline wrap object methods as well
 res3 =  timerdec_always()(vec.astype)(np.uint8)
+
+now()

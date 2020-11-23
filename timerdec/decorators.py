@@ -4,9 +4,27 @@ import statistics
 import atexit
 from tqdm import tqdm
 import psutil
+from inspect import getframeinfo, stack
 
 
-def timerdec(reps=os.getenv('TIMERDEC_REPS', 4), rerun=os.getenv('TIMERDEC_RERUN', 'true'), always=os.getenv('TIMERDEC_ALWAYS', 'false'), progress=False, verbose= False):
+from .shared_data import prev_runs, reference_start
+
+from .snapshots import now
+
+
+def nowdec(enabled=True):
+
+    def decorator(func):
+
+        def wrapper(*args, **kwargs):
+            caller = getframeinfo(stack()[1][0])
+            now(None, enabled, caller.function, level=2)
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+
+def timerdec(reps=os.getenv('TIMERDEC_REPS', 4), rerun=os.getenv('TIMERDEC_RERUN', 'true'), always=os.getenv('TIMERDEC_ALWAYS', 'false'), progress=False, verbose=False):
     """A decorator for measuring method execution time statistics
 
     Args:
@@ -27,8 +45,10 @@ def timerdec(reps=os.getenv('TIMERDEC_REPS', 4), rerun=os.getenv('TIMERDEC_RERUN
             def __init__(self, func, reps):
                 self.func = func
                 self.reps = reps
+
             def __enter__(self):
                 return self.func, progressbar(range(self.reps))
+
             def __exit__(self, type, value, traceback):
                 if verbose:
                     datadump()
@@ -46,12 +66,13 @@ def timerdec(reps=os.getenv('TIMERDEC_REPS', 4), rerun=os.getenv('TIMERDEC_RERUN
                     avg_usr = statistics.mean(data['usr'])
                     avg_sys = statistics.mean(data['sys'])
                     avg_usr_child = statistics.mean(data['usr_child'])
-                    avg_sys_child = statistics.mean(data['sys_child'])                    
+                    avg_sys_child = statistics.mean(data['sys_child'])
                     print("Avg time and std dev (usr, sys, usr_child, sys_child) for method {0}: {1:.2E} {2:.2E} ({3:.2E}, {4:.2E} {5:.2E}, {6:.2E}). Reps: {7}".format(
                         func.__qualname__.ljust(25), avg, std, avg_usr, avg_sys, avg_usr_child, avg_sys_child, data['cnt']))
                 else:
                     print("Method {0} was never called".format(
                         func.__qualname__))
+
             @atexit.register
             def final():
                 datadump()
@@ -67,7 +88,7 @@ def timerdec(reps=os.getenv('TIMERDEC_REPS', 4), rerun=os.getenv('TIMERDEC_RERUN
             # Real Wrapper
             def wrapper(*args, **kwargs):
                 # Check if should rerun
-               
+
                 if (data['runs'] == 0 or rerun == 'true'):
                     with WrapperContext(func, reps) as (wrap, iterator):
                         data['runs'] = data['runs'] + 1
@@ -88,9 +109,11 @@ def timerdec(reps=os.getenv('TIMERDEC_REPS', 4), rerun=os.getenv('TIMERDEC_RERUN
                             sys_child_end = ct.children_system
                             data['time'].append(end - start)
                             data['usr'].append(usr_end - usr_start)
-                            data['usr_child'].append(usr_child_end - usr_child_start)
+                            data['usr_child'].append(
+                                usr_child_end - usr_child_start)
                             data['sys'].append(sys_end - sys_start)
-                            data['sys_child'].append(sys_child_end - sys_child_start)
+                            data['sys_child'].append(
+                                sys_child_end - sys_child_start)
                             data['cnt'] = data['cnt'] + 1
                 else:
                     res = func(*args, **kwargs)
