@@ -4,12 +4,15 @@ Methods are called a configurable number of times (4 by default), and statistics
 
 ## API
 
+### Decorators
+
 There are two decorators available, timerdec and timerdec_always. The difference between the two is that timerdec_always is always executed, while timerdec is executed only if a decorated method is specifically requested at runtime by setting the TIMERDEC_METHODS environment variable as explained below.
 
-### Code Example
+#### Decorators Code Example
 
 ```python
-from timerdec.decorators import timerdec, timerdec_always
+from timerdec.decorators import timerdec, timerdec_always, nowdec
+from timerdec.snapshots import now
 import time
 import numpy as np
 
@@ -21,14 +24,13 @@ def r(size1, size2):
 class cl():
     def __init__(self):
         pass
-
+        
     #We can require timing information collection for method f at run time. A progress bar will be printed
+    
     @timerdec(progress=True)
     def f(self):
         a = r(1000, 1000)
-        time.sleep(0.2)
         b = r(1000, 1000)
-        time.sleep(0.2)
         c = np.dot(a,b)
 
     #Timing information will always be collected for this method. Method is run 1000 times
@@ -38,12 +40,20 @@ class cl():
 
 c = cl()
 
-c.f()
-c.dummy(a="dummy data")
+def do():
+    c.f()
+    c.dummy(a="dummy data")
+
+now('before do')
+do()
+now('after do')
+
 
 def ultima(s):
     time.sleep(1)
     return s
+
+
 
 #We can also wrap function calls
 res1 = timerdec_always()(ultima)("Hello!")
@@ -51,16 +61,21 @@ print(res1)
 
 #Subsequent calls of functions with inline (non decorator) wrapping will not be object of measures
 res2 = ultima('Bye!')
+print(res2)
 
 vec = np.zeros((1000,1000))
+
+now()
 
 #It is possible to inline wrap object methods as well
 res3 =  timerdec_always()(vec.astype)(np.uint8)
 
+now()
+
 
 ```
 
-### Execution and Configuration
+#### Execution and Configuration
 
 On execution, statistics are collected and results are printed at the end of execution. Fore each measured methid there will be a line containin wall clock time average and variance, user, system, children user and children system time. 
 
@@ -105,3 +120,30 @@ Avg time and std dev (usr, sys, usr_child, sys_child) for method r              
 
 
 ```
+
+
+### Snapshots
+
+To evaluate the time taken btween two points in the code, the now() method in module timerdec.snapshots is provided.
+
+```python
+import time
+from timerdec.snapshots import now
+
+def do():
+    now()
+    time.sleep(3)
+    now()
+
+do()
+
+```
+
+Will print time from startup and from previous call to now itself:
+
+```python
+Time at <stdin>:2:do             : 3.41271E+01.
+Time at <stdin>:4:do             : 3.71351E+01. Since previous call to self: 3.00798E+00
+
+```
+
